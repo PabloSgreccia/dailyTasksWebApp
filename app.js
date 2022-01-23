@@ -54,6 +54,10 @@ class UI{
     }
 
     deleteTask(element){
+        console.log(element.parentElement.parentElement.parentElement.querySelector(".taskDescription"));
+        const descriptionValue = element.parentElement.parentElement.parentElement.querySelector(".taskDescription").textContent;
+        localStorage.removeItem(descriptionValue);
+
         if(element.name === 'delete'){
             element.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
             this.showToastr("Task deleted successfully", "success");
@@ -64,9 +68,6 @@ class UI{
             document.getElementById('taskListHeader').style.display = "none";
         }
         
-        const descriptionValue = element.parentElement.parentElement.querySelector(".taskDescription").textContent;
-        const timeValue = element.parentElement.parentElement.querySelector(".taskTime").textContent;
-        localStorage.removeItem(descriptionValue, timeValue);
     }
 
     showToastr(message, cssClass){
@@ -150,6 +151,7 @@ document.getElementById('task-form').addEventListener('submit', function(e){
     ui.showToastr("Task added successfully", "success");
 
     localStorage.setItem(task.description, task.time)
+    console.log(localStorage);
 
     e.preventDefault();
 })
