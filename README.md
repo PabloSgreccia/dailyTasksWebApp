@@ -10,7 +10,7 @@ Steps:
 Tools used:
 	- HTML
 	- CSS
-	- BootsWatch
+	- BootsWatch / bootstrap
 	- JavaScript
 	
-NOTE: if you close or restart the page, you will lost your data. I'm working on adding a database.
+NOTE: the data is saved into localStorange.
