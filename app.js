@@ -36,7 +36,9 @@ class UI{
                             <span class="taskTime">${task.time}</span>
                         </div>
                         <div class="col-1 text-center">
-                            <a href="#" class="btn btn-danger" name="delete">Delete</a>
+                            <a href="#" class="btn btn-danger" name="delete">
+                                <i class="bi bi-trash"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -64,9 +66,7 @@ class UI{
         
         const descriptionValue = element.parentElement.parentElement.querySelector(".taskDescription").textContent;
         const timeValue = element.parentElement.parentElement.querySelector(".taskTime").textContent;
-        //console.log(descriptionValue);
         localStorage.removeItem(descriptionValue, timeValue);
-        //console.log(localStorage);
     }
 
     showToastr(message, cssClass){
@@ -160,7 +160,6 @@ document.getElementById('tasks-list').addEventListener('click', function(e){
 })
 
 // use localStorage to load saved data
-console.log(localStorage);
 for(var i=0 ; i<localStorage.length ; i++){
     const key = localStorage.key(i);
     const time = localStorage.getItem(key);
@@ -174,5 +173,3 @@ for(var i=0 ; i<localStorage.length ; i++){
     }
 }
 
-
-//console.log(localStorage)
