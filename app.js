@@ -1,12 +1,18 @@
+// CLASSES
+// CLASSES
+// CLASSES
+
 class Task{
-    constructor(description){
-        var today = new Date();
-        if(today.getMinutes() < 10){
-            var minutes = '0' + today.getMinutes()
-        } else{
-            var minutes = today.getMinutes()
+    constructor(description, time){
+        if(time == null){
+            var today = new Date();
+            if(today.getMinutes() < 10){
+                var minutes = '0' + today.getMinutes()
+            } else{
+                var minutes = today.getMinutes()
+            }
+            var time = today.getDate() + "/" + (today.getMonth() + 1)+ " - " +  today.getHours() + ":" + minutes;
         }
-        var time = today.getDate() + "/" + (today.getMonth() + 1)+ " - " +  today.getHours() + ":" + minutes;
 
         this.description = description;
         this.time = time;
@@ -24,10 +30,10 @@ class UI{
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-8">
-                            ${task.description}                    
+                            <span class="taskDescription">${task.description}</span>                    
                         </div>
                         <div class="col-3 text-center">
-                            ${task.time}                    
+                            <span class="taskTime">${task.time}</span>
                         </div>
                         <div class="col-1 text-center">
                             <a href="#" class="btn btn-danger" name="delete">Delete</a>
@@ -55,6 +61,12 @@ class UI{
         if(tasksList.length == 0){
             document.getElementById('taskListHeader').style.display = "none";
         }
+        
+        const descriptionValue = element.parentElement.parentElement.querySelector(".taskDescription").textContent;
+        const timeValue = element.parentElement.parentElement.querySelector(".taskTime").textContent;
+        //console.log(descriptionValue);
+        localStorage.removeItem(descriptionValue, timeValue);
+        //console.log(localStorage);
     }
 
     showToastr(message, cssClass){
@@ -63,38 +75,6 @@ class UI{
 
 }
 
-// DOM Events
-// DOM Events
-// DOM Events
-
-document.getElementById('task-form').addEventListener('submit', function(e){
-    
-    const tasksList = document.querySelectorAll('.draggable');
-    if(tasksList.length == 0){
-        document.getElementById('taskListHeader').style.display = "flex";
-    }
-
-    const taskDescription =  document.getElementById('taskDescription').value;
-    const task = new Task(taskDescription);
-    
-    const ui = new UI();
-
-    if(taskDescription === ''){
-        ui.showToastr("Please add a task description", "warning");
-        return;
-    } 
-
-    ui.addTask(task);
-    ui.resetForm();
-    ui.showToastr("Task added successfully", "success");
-
-    e.preventDefault();
-})
-
-document.getElementById('tasks-list').addEventListener('click', function(e){
-    const ui = new UI()
-    ui.deleteTask(e.target);
-})
 
 // DRAGGABLE functions
 // DRAGGABLE functions
@@ -142,3 +122,57 @@ function draggableFunctions() {
         }, {offset: Number.NEGATIVE_INFINITY}).element
     }
 }
+
+
+// DOM Events
+// DOM Events
+// DOM Events
+
+document.getElementById('task-form').addEventListener('submit', function(e){
+    
+    const tasksList = document.querySelectorAll('.draggable');
+    if(tasksList.length == 0){
+        document.getElementById('taskListHeader').style.display = "flex";
+    }
+
+    const taskDescription =  document.getElementById('taskDescription').value;
+    const task = new Task(taskDescription);
+    
+    const ui = new UI();
+
+    if(taskDescription === ''){
+        ui.showToastr("Please add a task description", "warning");
+        return;
+    } 
+
+    ui.addTask(task);
+    ui.resetForm();
+    ui.showToastr("Task added successfully", "success");
+
+    localStorage.setItem(task.description, task.time)
+
+    e.preventDefault();
+})
+
+document.getElementById('tasks-list').addEventListener('click', function(e){
+    const ui = new UI()
+    ui.deleteTask(e.target);
+})
+
+// use localStorage to load saved data
+console.log(localStorage);
+for(var i=0 ; i<localStorage.length ; i++){
+    const key = localStorage.key(i);
+    const time = localStorage.getItem(key);
+
+    const task = new Task(key, time);
+    const ui = new UI();
+    ui.addTask(task);
+
+    if(localStorage.length > 0){
+        document.getElementById('taskListHeader').style.display = "flex";
+    }
+}
+
+
+//console.log(localStorage)
