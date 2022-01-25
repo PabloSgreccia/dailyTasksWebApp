@@ -36,8 +36,8 @@ class UI{
                             <span class="taskTime">${task.time}</span>
                         </div>
                         <div class="col-1 text-center">
-                            <a href="#" class="btn btn-danger" name="delete">
-                                <i class="bi bi-trash"></i>
+                            <a href="#" class="btn btn-danger" name="deleteA">
+                                <i class="bi bi-trash" name="deleteI"></i>
                             </a>
                         </div>
                     </div>
@@ -54,14 +54,22 @@ class UI{
     }
 
     deleteTask(element){
-        console.log(element.parentElement.parentElement.parentElement.querySelector(".taskDescription"));
-        const descriptionValue = element.parentElement.parentElement.parentElement.querySelector(".taskDescription").textContent;
-        localStorage.removeItem(descriptionValue);
 
-        if(element.name === 'delete'){
+        console.log('el nombre es: ' + element.className);
+
+        if(element.name === 'deleteA'){
+            console.log(element.parentElement.parentElement.querySelector(".taskDescription").textContent);
+            const descriptionValue = element.parentElement.parentElement.querySelector(".taskDescription").textContent;
+            localStorage.removeItem(descriptionValue);
             element.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
             this.showToastr("Task deleted successfully", "success");
-        }
+        } else if (element.className === 'bi bi-trash'){
+            console.log(element.parentElement.parentElement.parentElement.querySelector(".taskDescription").textContent);
+            const descriptionValue = element.parentElement.parentElement.parentElement.querySelector(".taskDescription").textContent;
+            localStorage.removeItem(descriptionValue);
+            element.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+            this.showToastr("Task deleted successfully", "success");
+        } 
         
         const tasksList = document.querySelectorAll('.draggable');
         if(tasksList.length == 0){
@@ -157,7 +165,9 @@ document.getElementById('task-form').addEventListener('submit', function(e){
 })
 
 document.getElementById('tasks-list').addEventListener('click', function(e){
-    const ui = new UI()
+    const ui = new UI();
+    //console.log(e.target);
+    //console.log("asdasdasd");
     ui.deleteTask(e.target);
 })
 
